@@ -25,6 +25,14 @@ public class GameAI
     private ArrayList<Position> powerUpPositions = new ArrayList<Position>();
     private static ArrayList<Respawn> treasure_respawns = new ArrayList<Respawn>();
     private static ArrayList<Respawn> powerUp_respawns = new ArrayList<Respawn>();
+    private String[] fleeingActions = {"virar_direita","andar","andar"}; 
+    private int fleeingIterator = 0;
+    boolean isBreezy;
+    boolean isBluey;
+    boolean isReddy;
+    boolean isFlashy;
+    boolean isNoisy;
+    boolean isBlocked;
     
     /* Game States */
     GameState mapping = new Mapping(this);
@@ -33,9 +41,9 @@ public class GameAI
     GameState fleeing = new Fleeing(this);
     GameState pursuing = new Pursuing(this);
     GameState striking = new Striking(this);
+    GameState pondering = new Pondering(this);
     GameState currentState = mapping;
     
-    boolean isBlocked = false;
     /**
      * Refresh player status
      * @param x			player position x
@@ -141,9 +149,17 @@ public class GameAI
     public void GetObservations(List<String> o)
     {
     	isBlocked = false;
+    	isBreezy = false;
+        isBluey = false;
+        isReddy = false;
+        isFlashy = false;
+        isNoisy = false;
+    //    System.out.println("----SETEI AS FLAGS FALSAS------");
         for (String s : o)
         {      	
             if(s.equals("blocked")){
+            	
+            	isBlocked = true;
             	
             	Position b= NextPosition();
             	
@@ -151,45 +167,58 @@ public class GameAI
             		return;
             	
             	boolean flag = blockPositions.getOrDefault(b.y*59 + b.x,false);
+            	
         		if(!flag)
         			blockPositions.put(b.y*59 + b.x, true);
         		
             	System.out.println("blockPos size : "+ blockPositions.size());
-            	
             	System.out.println("Estou blocked");
             	
             } else if(s.equals("steps")){
             	
+            	isNoisy = true;
         
             } else if(s.equals("breeze")){
             	
+            	isBreezy = true;
             	/* Treta com os possiveis pits */
             	pitPositions.add(new Position());
             	
             } else if(s.equals("flash")){
             	
+            	isFlashy = true;
             	/* Treta com os possiveis teleports */
             	teleportPositions.add(new Position());
             	
             } else if(s.equals("blueLight")){
             	
+            	isBluey = true;
+            	
             	Position p = new Position(player.x, player.y);
-            	if(!powerUpPositions.contains(p)){
-            		
-            		powerUpPositions.add(new Position(player.x,player.y));
-                	powerUp_respawns.add(new Respawn(player.x,player.y));
-            	}            	
-
+            	
+            	for(Position e : powerUpPositions){
+            		if(e.x == player.x && e.y == player.y)
+            			break;
+            		else{
+                		powerUpPositions.add(new Position(player.x,player.y));
+                    	powerUp_respawns.add(new Respawn(player.x,player.y));
+            		}	
+            	}           	
 
             } else if(s.equals("redLight")){
             	
+            	isReddy = true;
+            	
             	Position p = new Position(player.x, player.y);
-            	if(!treasurePositions.contains(p)){
-            		
-                	treasurePositions.add(new Position(player.x,player.y));
-                	treasure_respawns.add(new Respawn(player.x,player.y));
-                	
-            	}	
+            	
+            	for(Position e : treasurePositions){
+            		if(e.x == player.x && e.y == player.y)
+            			break;
+            		else{
+            			treasurePositions.add(new Position(player.x,player.y));
+            			treasure_respawns.add(new Respawn(player.x,player.y));
+            		}	
+            	}
             } else if(s.equals("greenLight")){
             	
 
@@ -206,7 +235,8 @@ public class GameAI
      */
     public void GetObservationsClean()
     {
-        
+    	List<String> s = new ArrayList<String>();
+    	GetObservations(s);
     }
 
     /**
@@ -215,8 +245,45 @@ public class GameAI
      */
     public String GetDecision()
     {
-    	
-    	return currentState.doAction();
+    	System.out.println("Current State is "+currentState.toString());
+    	/*System.out.println("My sensors : ");
+    	System.out.printf("isBreezy - ");
+    	f(isBreezy)
+    		System.out.printf("Yes;");
+    	else
+    		System.out.printf("No;");
+    	System.out.printf("isFlashy - ");
+    	if(isFlashy)
+    		System.out.printf("Yes;");
+    	else
+    		System.out.printf("No;");
+    	System.out.printf("isBluey - ");
+    	if(isBluey)
+    		System.out.printf("Yes;");
+    	else
+    		System.out.printf("No;");
+    	System.out.printf("isReddy - ");
+    	if(isReddy)
+    		System.out.printf("Yes;");
+    	else
+    		System.out.println("No;");
+    	System.out.printf("isBlocked - ");
+    	if(isBlocked)
+    		System.out.printf("Yes;");
+    	else
+    		System.out.printf("No;");
+    	System.out.printf("isNoisy - ");
+    	if(isNoisy)
+    		System.out.printf("Yes;\n");
+    	else
+    		System.out.printf("No;\n");*/
+    	String action = currentState.doAction();
+    	System.out.println("Now I'm in state "+ currentState.toString());
+    	System.out.printf("\n");
+    	System.out.println("I'm gonna do : "+ action);
+    	System.out.printf("\n");
+
+    	return action;
     	
     	
        /* java.util.Random rand = new java.util.Random();
@@ -245,7 +312,33 @@ public class GameAI
 	    }
 	    	return "";*/
     }
-    
+    GameState getMappingState(){
+    	return this.mapping;
+    }
+    GameState getSearchingGoldState(){
+    	return this.searching_gold;
+    }
+    GameState getSearchingPowerUpState(){
+    	return this.searching_pu;
+    }
+    GameState getFleeingState(){
+    	return this.fleeing;
+    }
+    GameState getPursuingState(){
+    	return this.pursuing;
+    }
+    GameState getStrikingState(){
+    	return this.striking;
+    }
+    GameState getPonderingState(){
+    	return this.pondering;
+    }
+    GameState getCurrentState(){
+    	return this.currentState;
+    }
+    void changeState(GameState new_current_state){
+    	this.currentState = new_current_state;
+    }
     /* Class responsible to gather the items respawn informations */
 	private class Respawn implements ActionListener {
 		
@@ -273,6 +366,9 @@ public class GameAI
 			 */
 			
 			this.timerStop();
+			
+			/* Descomente quando searching gold estiver implementado */
+			//changeState(getSearchingGoldState());
 			
 		}
 	}
@@ -302,10 +398,37 @@ public class GameAI
 		public String doAction() {
 			
 			//System.out.println("do Action do Mapping");
-			Position p = NextPosition();
-			if(isOutofBounds(p.x, p.y))
+			Position p = new Position(player.x, player.y);
+			Position pn = NextPosition();
+			if(isBluey){
+				
+				for(int i = 0; i < treasurePositions.size(); i++){
+					if(p.x == treasurePositions.get(i).x && p.y == treasurePositions.get(i).y)
+						treasure_respawns.get(i).timerStart();
+				}
+				return "pegar_ouro";
+			}
+			if(isReddy){
+				
+				for(int i = 0; i < powerUpPositions.size(); i++){
+					if(p.x == powerUpPositions.get(i).x && p.y == powerUpPositions.get(i).y)
+						powerUp_respawns.get(i).timerStart();
+				}
+				return "pegar_powerup";
+			}
+			if(isNoisy){
+				//fleeingIterator = 0;
+				//changeState(getFleeingState());
+				//return "andar_re";
+			}
+			if(isBreezy || isFlashy){
+				//fleeingIterator = 0;
+				//changeState(getFleeingState());
+				//return "andar_re";
+			}
+			if(isOutofBounds(pn.x, pn.y))
 				return "virar_direita";
-			if(blockPositions.getOrDefault(p.y*59 + p.x, false)){
+			if(blockPositions.getOrDefault(pn.y*59 + pn.x, false)){
 				return "virar_direita";
 			}
 			return "andar";
@@ -351,8 +474,22 @@ public class GameAI
 		@Override
 		public String doAction() {
 			
-			return null;
-		}
+		/*	Position pn = NextPosition();
+			if(fleeingIterator == 2){
+				fleeingIterator = 0;
+				changeState(getPonderingState());
+				return "andar";
+			}
+			if(isOutofBounds(pn.x, pn.y))
+				return "virar_direita";
+			if(blockPositions.getOrDefault(pn.y*59 + pn.x, false)){
+				return "virar_direita";
+			}
+			String action = fleeingActions[fleeingIterator];
+			
+			fleeingIterator++;*/
+			return "andar";
+			}
 	}
 	class Pursuing implements GameState{
 		
@@ -380,6 +517,56 @@ public class GameAI
 		public String doAction() {
 			
 			return null;
+		}	
+	}
+	class Pondering implements GameState{
+
+		GameAI game_ai;
+		
+		public Pondering(GameAI o){
+			
+			game_ai = o;
+		}
+		@Override
+		public String doAction() {
+			
+			/*Position p = new Position(player.x, player.y);
+			Position pn = NextPosition();
+
+			if(isBluey){
+				
+				for(int i = 0; i < treasurePositions.size(); i++){
+					if(p.x == treasurePositions.get(i).x && p.y == treasurePositions.get(i).y)
+						treasure_respawns.get(i).timerStart();
+				}
+				return "pegar_ouro";
+			}
+			if(isReddy){
+				
+				for(int i = 0; i < powerUpPositions.size(); i++){
+					if(p.x == powerUpPositions.get(i).x && p.y == powerUpPositions.get(i).y)
+						powerUp_respawns.get(i).timerStart();
+				}
+				return "pegar_powerup";
+			}
+			if(isNoisy){
+				fleeingIterator = 0;
+				changeState(getFleeingState());
+				return "andar_re";
+			}
+			if(isBreezy || isFlashy){
+				fleeingIterator = 0;
+				changeState(getFleeingState());
+				return "andar_re";
+			}
+			
+			if(isOutofBounds(pn.x, pn.y))
+				return "virar_direita";
+			if(blockPositions.getOrDefault(pn.y*59 + pn.x, false)){
+				return "virar_direita";
+			}
+			changeState(getMappingState());*/
+			return "andar";
 		}
 	}
 }
