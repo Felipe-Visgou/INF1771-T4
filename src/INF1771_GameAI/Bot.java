@@ -287,9 +287,12 @@ public class Bot implements Runnable {
 			msgSeconds += timer_interval;
 
 			client.sendRequestGameStatus();
+		//	System.out.println("Game Status is " + gameStatus);
+
 			if (gameStatus.equals("Game"))
 				DoDecision();
 			else if (msgSeconds >= 5000) {
+				System.out.println("Game Status is " + gameStatus);
 
 				System.out.println(gameStatus);
 				System.out.println(GetTime());
