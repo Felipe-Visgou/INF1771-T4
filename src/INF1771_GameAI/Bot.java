@@ -28,7 +28,7 @@ public class Bot implements Runnable {
 
 	List<String> msg = new ArrayList<String>();
 	double msgSeconds = 0;
-	int timer_interval = 400;
+	int timer_interval = 500;
 
 	public Bot() {
 		// Set command listener to process commands received from server
