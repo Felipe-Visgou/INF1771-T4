@@ -12,10 +12,7 @@ import javax.swing.Timer;
 
 public class GameAI
 {
-<<<<<<< HEAD
 	boolean bAllClear = false;
-=======
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 	boolean bLights = false;
 	boolean bPicked = false;
     Position player = new Position();
@@ -44,26 +41,15 @@ public class GameAI
     GameState fleeing = new Fleeing(this);
     GameState pursuing = new Pursuing(this);
     GameState striking = new Striking(this);
-<<<<<<< HEAD
     GameState roaming = new Roaming(this);
     GameState currentState = mapping;
     
     boolean isBlocked = false;
-=======
-    GameState pondering = new Pondering(this);
-    GameState roaming = new Roaming(this);
-    GameState currentState = roaming;
-    
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
     boolean isBreezy;
     boolean isBluey;
     boolean isReddy;
     boolean isFlashy;
     boolean isNoisy;
-<<<<<<< HEAD
-=======
-    boolean isBlocked;
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
     boolean isEnemy;
     boolean isDamage;
     boolean isHit;
@@ -81,7 +67,6 @@ public class GameAI
      * @param energy	player energy
      */
     
-<<<<<<< HEAD
     /* Get State Methods */
     GameState getMappingState(){
         return this.mapping;
@@ -115,14 +100,6 @@ public class GameAI
     
     public static void SetNeighbors(Node N){
     	if (N.getIndex() - 59 > -1)
-=======
-    public enum Tile{
-    	Unmapped, Clear, mayPit, Wall, mayTeleport, mayPitport
-    }
-    
-    public void SetNeighbors(Node N){
-    	if (N.getIndex() - 59 > 0)
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 			N.setNeighbor(N.getIndex() - 59);
 		if (N.getIndex() + 59 < 59*34)
 			N.setNeighbor(N.getIndex() + 59);
@@ -130,12 +107,9 @@ public class GameAI
 			N.setNeighbor(N.getIndex() - 1);
 		if (N.getIndex() + 1 < 59*34 && (N.getIndex()+1)%59 != 0)
 			N.setNeighbor(N.getIndex() + 1);
-<<<<<<< HEAD
 		if (N.getNeighborList().size() == 0){
 			System.out.println("Fudeu");
 		}
-=======
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
     }
     
     public String DoBestMove (Position S, Position F){ //Must be adjacent
@@ -279,7 +253,6 @@ public class GameAI
      * Observations received
      * @param o	 list of observations
      */
-<<<<<<< HEAD
     public void GetObservations(List<String> o)
     {	
     	Position p = GetPlayerPosition();    	
@@ -294,22 +267,9 @@ public class GameAI
         isHit = false;
         isBreezy = false;
         isFlashy = false;
-=======
-/*    public void GetObservations(List<String> o)
-    {	
-    	
-    	Position p = GetPlayerPosition();
-    	Position n = NextPosition();
-    	Boolean bPresence = false;
-    	List<Position> Ladj = GetObservableAdjacentPositions();
-    	bLights = false;
-    	isBlocked = false;
-    	isBreezy = false;
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
         isBluey = false;
         isReddy = false;
         isNoisy = false;
-<<<<<<< HEAD
         isBlocked = false;
         enemyGap = -1;
         
@@ -343,39 +303,16 @@ public class GameAI
         			Tmap.put(m.y*59 + m.x, new Node(1000000));
         			Tmap.get(m.y*59 + m.x).setIndex(m.y*59 + m.x);
         			SetNeighbors(Tmap.get(m.y*59 + m.x));
-=======
-        isDamage = false;
-        isEnemy = false;
-        isHit = false;
-        enemyGap = -1;
-        for (String s : o)
-        {      	
-            if(s.equals("blocked")){            	
-            	isBlocked = true;
-            	if(isOutofBounds(p.x,p.y))
-            		return;
-            	
-            	Enum flag = mapPositions.getOrDefault(n.y*59 + n.x, Tile.Unmapped);
-        		if(flag != Tile.Wall){
-        			mapPositions.put(n.y*59 + n.x, Tile.Wall);
-        			Tmap.put(n.y*59 + n.x, new Node(1000000));
-        			Tmap.get(n.y*59 + n.x).setIndex(n.y*59 + n.x);
-        			SetNeighbors(Tmap.get(n.y*59 + n.x));
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
         		}
             	
             	System.out.println("Estou blocked");
             	
             } else if(s.equals("steps")){
+            	
             	isNoisy = true;
             } else if(s.equals("breeze")){
-<<<<<<< HEAD
             	bPresence = true;
             	isBreezy = true;
-=======
-            	isBreezy = true;
-            	bPresence = true;
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
             	System.out.println("MMM BREEZE");
             	
             	for (int i = 0; i < Ladj.size(); i++){
@@ -385,26 +322,20 @@ public class GameAI
             				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
             				Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
                 			SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-<<<<<<< HEAD
                 			mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
                         	Tmap.put(p.y*59 + p.x, new Node(1));
                         	Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
                         	SetNeighbors(Tmap.get(p.y*59 + p.x));
-=======
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
             			}
             			else if (mapPositions.getOrDefault(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped) == Tile.mayTeleport){
             				mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.mayPitport);
             				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
             				Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
                 			SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-<<<<<<< HEAD
                 			mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
                         	Tmap.put(p.y*59 + p.x, new Node(1));
                         	Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
                         	SetNeighbors(Tmap.get(p.y*59 + p.x));
-=======
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
         				}
             		}
             	}
@@ -421,26 +352,20 @@ public class GameAI
             				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
             				Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
                 			SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-<<<<<<< HEAD
                 			mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
                         	Tmap.put(p.y*59 + p.x, new Node(1));
                         	Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
                         	SetNeighbors(Tmap.get(p.y*59 + p.x));
-=======
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
             			}
             			else if (mapPositions.getOrDefault(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped) == Tile.mayPit){
             				mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.mayPitport);
             				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
             				Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
                 			SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-<<<<<<< HEAD
                 			mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
                         	Tmap.put(p.y*59 + p.x, new Node(1));
                         	Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
                         	SetNeighbors(Tmap.get(p.y*59 + p.x));
-=======
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
         				}
             		}
             	}
@@ -463,198 +388,19 @@ public class GameAI
             	if(!treasurePositions.contains(p1)){
             		
                 	treasurePositions.add(new Position(player.x,player.y));
-<<<<<<< HEAD
                 	if (treasurePositions.size() >= 2)
                 		currentState = searching_gold;
                 	treasure_respawns.add(new Respawn(player.x,player.y));
                 	
             	}	
-=======
-                	treasure_respawns.add(new Respawn(player.x,player.y));
-                	
-				}
-			} else if (s.equals("greenLight")) {
-
-			} else if (s.equals("weakLight")) {
-
-			} else {
-				System.out.println("MAS QUE PORRA EH ESSA: " + s);
-				String[] split = s.split("#");
-				if (split[0].equals("enemy")) {
-						isEnemy = true;
-						enemyGap = Integer.parseInt(split[1]);
-				}
-				else{
-					isHit = true;
-				}
-			}
-		}
-        if (bPresence == false && mapPositions.getOrDefault(p.y*59 + p.x, Tile.Unmapped) != Tile.Wall){ //Didn't feel any Pit or Teleport or Wall
-        	mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
-        	Tmap.put(p.y*59 + p.x, new Node(1));
-        	Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
-			SetNeighbors(Tmap.get(p.y*59 + p.x));
-        	for (int i = 0; i < Ladj.size(); i++){ //My adjacent tiles are clear of Pit/Teleport
-        		if (!isOutofBounds(Ladj.get(i).y, Ladj.get(i).x)){        			
-        			if (mapPositions.get(Ladj.get(i).y*59 + Ladj.get(i).x) == Tile.mayPit){
-        				mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Clear);
-        				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-        	        	Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-        				SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-        			}
-        			else if (mapPositions.get(Ladj.get(i).y*59 + Ladj.get(i).x) == Tile.mayTeleport){
-        				mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Clear);
-        				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-        	        	Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-        				SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-        			}
-        			else if (mapPositions.get(Ladj.get(i).y*59 + Ladj.get(i).x) == Tile.mayPitport){
-        				mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Clear);
-        				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-        	        	Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-        				SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-        			}
-        			else{
-        				Sunknown.add(0, Ladj.get(i));
-        				Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-        	        	Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-        				SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-        			}
-        		}
-        	}
-        }
-
-    }*/
- public void GetObservations(List<String> o)
-    { 
-     Position p = GetPlayerPosition();
-     Position n = NextPosition();
-     Boolean bPresence = false;
-     List<Position> Ladj = GetObservableAdjacentPositions();
-     bLights = false;
- 	isBlocked = false;
- 	isBreezy = false;
-     isBluey = false;
-     isReddy = false;
-     isFlashy = false;
-     isNoisy = false;
-     isDamage = false;
-     isEnemy = false;
-     isHit = false;
-     enemyGap = -1;
-        for (String s : o)
-        {       
-            if(s.equals("blocked")){
-            	isBlocked = true;
-             
-             if(isOutofBounds(p.x,p.y))
-              return;
-             
-             Enum flag = mapPositions.getOrDefault(n.y*59 + n.x, Tile.Unmapped);
-          if(flag != Tile.Wall){
-           System.out.println("Funciona");
-           mapPositions.put(n.y*59 + n.x, Tile.Wall);
-           Tmap.put(n.y*59 + n.x, new Node(1000000));
-           Tmap.get(n.y*59 + n.x).setIndex(n.y*59 + n.x);
-           SetNeighbors(Tmap.get(n.y*59 + n.x));
-          }
-             
-             System.out.println("Estou blocked");
-             
-            } else if(s.equals("steps")){
-             	isNoisy = true;
-        
-            } else if(s.equals("breeze")){
-             bPresence = true;
-             isBreezy = true;
-             System.out.println("MMM BREEZE");
-             
-             for (int i = 0; i < Ladj.size(); i++){
-              if (!isOutofBounds(Ladj.get(i).y, Ladj.get(i).x)){
-               if (mapPositions.getOrDefault(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped) == Tile.Unmapped){
-                mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.mayPit);
-                Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
-                Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-                   SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-                   mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
-                         Tmap.put(p.y*59 + p.x, new Node(1));
-                         Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
-               }
-               else if (mapPositions.getOrDefault(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped) == Tile.mayTeleport){
-                mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.mayPitport);
-                Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
-                Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-                   SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-                   mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
-                         Tmap.put(p.y*59 + p.x, new Node(1));
-                         Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
-            }
-              }
-             }
-             
-            } else if(s.equals("flash")){
-             bPresence = true;
-             isFlashy = true;
-             System.out.println("WOW FLASHES");
-             
-             for (int i = 0; i < Ladj.size(); i++){
-              if (!isOutofBounds(Ladj.get(i).y, Ladj.get(i).x)){
-               if (mapPositions.getOrDefault(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped) == Tile.Unmapped){
-                mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.mayTeleport);
-                Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
-                Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-                   SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-                   mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
-                         Tmap.put(p.y*59 + p.x, new Node(1));
-                         Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
-               }
-               else if (mapPositions.getOrDefault(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped) == Tile.mayPit){
-                mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.mayPitport);
-                Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1000000));
-                Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-                   SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-                   mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
-                         Tmap.put(p.y*59 + p.x, new Node(1));
-                         Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
-            }
-              }
-             }
-             
-            } else if(s.equals("blueLight")){
-             bLights = true;
-             isBluey = true;
-             Position p1 = new Position(player.x, player.y);
-             if(!powerUpPositions.contains(p1)){
-              
-              powerUpPositions.add(new Position(player.x,player.y));
-                 powerUp_respawns.add(new Respawn(player.x,player.y));
-             }             
-
-
-            } else if(s.equals("redLight")){
-             bLights = true;
-             isReddy = true;
-             Position p1 = new Position(player.x, player.y);
-             if(!treasurePositions.contains(p1)){
-              
-                 treasurePositions.add(new Position(player.x,player.y));
-                 treasure_respawns.add(new Respawn(player.x,player.y));
-                 
-             } 
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
             } else if(s.equals("greenLight")){
-             
+            	
 
             } else if(s.equals("weakLight")){
 
 
-<<<<<<< HEAD
             } else {            	
             	System.out.println("MAS QUE PORRA EH ESSA: " + s);
-=======
-            } else {             
-				System.out.println("MAS QUE PORRA EH ESSA: " + s);
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 				String[] split = s.split("#");
 				if (split[0].equals("enemy")) {
 						isEnemy = true;
@@ -663,7 +409,6 @@ public class GameAI
 				else{
 					isHit = true;
 				}
-<<<<<<< HEAD
 				
             }
         }
@@ -704,51 +449,10 @@ public class GameAI
         			}
         		}
         	}
-=======
-    
-            }
-        }
-        if (bPresence == false && mapPositions.getOrDefault(p.y*59 + p.x, Tile.Unmapped) != Tile.Wall){ //Didn't feel any Pit or Teleport or Wall
-         mapPositions.put(p.y*59 + p.x, Tile.Clear); //I'm clear
-         Tmap.put(p.y*59 + p.x, new Node(1));
-         Tmap.get(p.y*59 + p.x).setIndex(p.y*59 + p.x);
-   SetNeighbors(Tmap.get(p.y*59 + p.x));
-         for (int i = 0; i < Ladj.size(); i++){ //My adjacent tiles are clear of Pit/Teleport
-          if (!isOutofBounds(Ladj.get(i).y, Ladj.get(i).x)){           
-           if (mapPositions.get(Ladj.get(i).y*59 + Ladj.get(i).x) == Tile.mayPit){
-            mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped);
-            Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-                  Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-            SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-           }
-           else if (mapPositions.get(Ladj.get(i).y*59 + Ladj.get(i).x) == Tile.mayTeleport){
-            mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped);
-            Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-                  Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-            SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-           }
-           else if (mapPositions.get(Ladj.get(i).y*59 + Ladj.get(i).x) == Tile.mayPitport){
-            mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped);
-            Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-                  Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-            SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-           }
-           else if (mapPositions.get(Ladj.get(i).y*59 + Ladj.get(i).x) == Tile.Wall){
-               System.out.println("Funciona");
-           }
-           else{
-            Sunknown.add(0, Ladj.get(i));
-            mapPositions.put(Ladj.get(i).y*59 + Ladj.get(i).x, Tile.Unmapped);
-            Tmap.put(Ladj.get(i).y*59 + Ladj.get(i).x, new Node(1));
-                  Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x).setIndex(Ladj.get(i).y*59 + Ladj.get(i).x);
-            SetNeighbors(Tmap.get(Ladj.get(i).y*59 + Ladj.get(i).x));
-           }
-          }
-         }
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
         }
 
     }
+
     /**
      * No observations received
      */
@@ -764,7 +468,6 @@ public class GameAI
      */
     public String GetDecision()
     {
-<<<<<<< HEAD
     	if (isNoisy || isEnemy || isDamage)
     		currentState = roaming;
 
@@ -773,67 +476,6 @@ public class GameAI
     	return ret;
     	
     	
-=======
-    	
-    	return currentState.doAction();
-    	
-    	
-       /* java.util.Random rand = new java.util.Random();
-    
-        	//pensar no que fazer
-	    	int  n = rand.nextInt(8);
-	    	//System.out.println("decision now is : "+ n);
-	    	switch(n){
-	     	case 0:
-	            return "virar_direita";
-	    	case 1:
-	            return "virar_esquerda";
-	    	case 2:*/
-	            //return "andar";
-	    	/*case 3:
-	            return "atacar";
-	    	case 4:
-	    		//aciona o timer desse ouro
-	            return "pegar_ouro";
-	    	case 5:
-	            return "pegar_anel";
-	    	case 6:
-	           return "pegar_powerup";
-	    	case 7:
-	          return "andar_re";
-	    }
-	    	return "";*/
-    }
-    GameState getMappingState(){
-    	return this.mapping;
-    }
-    GameState getSearchingGoldState(){
-    	return this.searching_gold;
-    }
-    GameState getSearchingPowerUpState(){
-    	return this.searching_pu;
-    }
-    GameState getFleeingState(){
-    	return this.fleeing;
-    }
-    GameState getPursuingState(){
-    	return this.pursuing;
-    }
-    GameState getStrikingState(){
-    	return this.striking;
-    }
-    GameState getPonderingState(){
-    	return this.pondering;
-    }
-    GameState getRoamingState(){
-    	return this.roaming;
-    }
-    GameState getCurrentState(){
-    	return this.currentState;
-    }
-    void changeState(GameState new_current_state){
-    	this.currentState = new_current_state;
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
     }
     
     /* Class responsible to gather the items respawn informations */
@@ -893,15 +535,10 @@ public class GameAI
 		@Override
 		public String doAction() {
 			
-<<<<<<< HEAD
-=======
-			//System.out.println("do Action do Mapping");
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 			Position p = NextPosition();
 			String S;
 			if (bLights == true){
 				System.out.println("peguei");
-<<<<<<< HEAD
 				for (int i =0; i<treasure_respawns.size(); i++){
 					if (treasurePositions.get(i).x == player.x && treasurePositions.get(i).y == player.y){
 						treasure_respawns.get(i).timerStart();
@@ -913,16 +550,6 @@ public class GameAI
 			if (Lpath.size() != 0){
 				System.out.println("to no path");
 
-=======
-				return "pegar_anel";
-			}
-			if(isEnemy){
-				changeState(getStrikingState());
-				return "atacar";
-			}
-			if (Lpath.size() != 0){
-				System.out.println("to no path");
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 				List<Position> Ladj = GetObservableAdjacentPositions();
 				for (int i = 0; i < Ladj.size(); i++){
 					if (!isOutofBounds (Ladj.get(i).x, Ladj.get(i).y)){
@@ -933,7 +560,6 @@ public class GameAI
 						}
 					}
 				}
-<<<<<<< HEAD
 
 				Position temp = new Position(Lpath.get(0)%59, Lpath.get(0)/59);
 				if (temp.x == player.x && temp.y == player.y){
@@ -947,18 +573,12 @@ public class GameAI
 				}
 				String ret = DoBestMove(player, temp);
 				if (ret.equals("andar") || ret.equals("andar_re"))
-=======
-				Position temp = new Position(Lpath.get(0)%59, Lpath.get(0)/59);				
-				String ret = DoBestMove(player, temp);
-				if (ret == "andar" || ret == "andar_re")
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 					Lpath.remove(0);
 				System.out.println(temp.x + "," + temp.y);
 				System.out.println(player.x + "," + player.y);
 				System.out.println(ret);
 				return ret;
 				
-<<<<<<< HEAD
 			}
 			if (isOutofBounds(p.x, p.y))
 				S = Tile.Wall.toString();			
@@ -1018,45 +638,6 @@ public class GameAI
 					System.out.println("default");
 					return "andar";
 			}
-=======
-			}
-			if (isOutofBounds(p.x, p.y))
-				S = Tile.Wall.toString();			
-			else
-				S = mapPositions.getOrDefault(p.y*59 + p.x, Tile.Unmapped).toString();
-			System.out.println(S);
-			switch (S){
-				case "Unmapped":
-					System.out.println("Andei");
-					return "andar";
-				case "Clear":
-					Lpath = Algorithm.AStar(Tmap, Tmap.get(player.y*59 + player.x), Tmap.get(Sunknown.get(0).y*59 + Sunknown.get(0).x), 59*34);
-					Lpath.remove(0);
-					Position temp = new Position(Lpath.get(0)%59, Lpath.get(0)/59);
-					System.out.println(temp.x + "," + temp.y);
-					System.out.println(player.x + "," + player.y);					
-					String ret = DoBestMove(player, temp);
-					System.out.println(ret);
-					if (ret == "andar" || ret == "andar_re")
-						Lpath.remove(0);
-					return ret;
-				case "mayPit": case "mayTeleport": case "mayPitport": case "Wall":
-					System.out.println("Virei");
-					return "virar_direita"; //Change to better action
-				default:
-					System.out.println("default");
-					return "andar";
-			}
-			
-			
-						
-			/*if(isOutofBounds(p.x, p.y))
-				return "virar_direita";
-			if(mapPositions.getOrDefault(p.y*59 + p.x, Tile.Unmapped) == Tile.Wall){
-				return "virar_direita";
-			}*/
-			//return null;
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 		}
 	}
 	class SearchingGold implements GameState{
@@ -1327,27 +908,6 @@ public class GameAI
 		@Override
 		public String doAction() {
 			
-<<<<<<< HEAD
-=======
-			/*String S;
-			Position p = NextPosition();
-			if (isOutofBounds(p.x, p.y))
-				S = Tile.Wall.toString();			
-			else
-				S = mapPositions.getOrDefault(p.y*59 + p.x, Tile.Unmapped).toString();
-			System.out.println(S);
-			switch (S){
-				case "Unmapped":
-
-				case "Clear":
-
-				case "mayPit": case "mayTeleport": case "mayPitport": case "Wall":
-
-				default:
-
-			}*/
-			
->>>>>>> eeee97eddcebf92758ab4bf4a665c9aa5f797e37
 			return "atirar";
 		}
 	}
@@ -1493,114 +1053,4 @@ public class GameAI
 			return "";
 		}
 	}
-	class Roaming implements GameState{
-
-		GameAI game_ai;
-		int contador = 0;
-		int actionC = 0;
-		boolean acertei = false;
-		int wait = 0;
-	       /* java.util.Random rand = new java.util.Random();
-	    
-    	//pensar no que fazer
-    	int  n = rand.nextInt(8);*/
-		java.util.Random bin = new java.util.Random();
-		public Roaming(GameAI o){
-			
-			game_ai = o;
-		}
-		@Override
-		public String doAction() {
-			
-			
-			String S;
-			Position p = NextPosition();
-			int  n = bin.nextInt(10);
-			if(isHit){
-				acertei = true;
-				return "atacar";
-			}
-			if(isEnemy){
-				System.out.println("is enemy is true");
-				for(int i = 0; i < enemyGap; i++)
-					if(mapPositions.getOrDefault(p.y * 59 + p.x + i, Tile.Unmapped).toString().equals("Wall"))
-						return "andar";
-				if(wait >= 10){
-					wait = 0;
-					return "virar_direita";
-				}
-				wait++;
-				return "atacar";
-			}
-			if(isBluey){
-				
-				for(int i = 0; i < treasurePositions.size(); i++){
-					if(p.x == treasurePositions.get(i).x && p.y == treasurePositions.get(i).y)
-						treasure_respawns.get(i).timerStart();
-				}
-				return "pegar_ouro";
-			}
-			if(isReddy){
-				
-				for(int i = 0; i < powerUpPositions.size(); i++){
-					if(p.x == powerUpPositions.get(i).x && p.y == powerUpPositions.get(i).y)
-						powerUp_respawns.get(i).timerStart();
-				}
-				return "pegar_powerup";
-			}
-			if(isBreezy || isFlashy){
-				inDanger = true;
-				return "andar_re";
-			}
-			if (isOutofBounds(p.x, p.y)){
-				contador = 0;
-				return "virar_direita";
-			}
-			if(contador >= n+4){
-				contador = 0;
-				if(n%2 == 0){
-					return "virar_direita";
-				}
-				else{
-					return "virar_esquerda";
-				}
-			}
-			if(inDanger){
-				contador = 0;
-				actionC++;
-				if(actionC == 3){
-					inDanger = false;
-					actionC = 0;
-					return "andar";
-				}
-				return "virar_direita";
-			}
-				S = mapPositions.getOrDefault(p.y * 59 + p.x, Tile.Unmapped).toString();
-			System.out.println(S);
-			switch (S) {
-			case "Unmapped":
-				contador++;
-				return "andar";
-			case "Clear":
-				contador++;
-				return "andar";
-			case "mayPit":
-			case "mayTeleport":
-			case "mayPitport":
-				System.out.println("Q periiigo");
-				inDanger = true;
-				return "andar_re";
-			case "Wall":
-				contador = 0;
-				if(n%2 == 0)
-					return "virar_direita";
-				else 
-					return "vira_esquerda";
-			default:
-
-			}
-			return "";
-		}
-	}
-	
 }
